@@ -5,7 +5,7 @@
     "projects": "dev/core/core",
     "start_date": "2023-04-20T00:00:00Z",
     "ultimate_license": true,
-    "fetch_merge_request_commits": false,
+    "fetch_merge_request_commits": true,
     "fetch_pipelines_extended": false,
     "fetch_group_variables": false,
     "fetch_project_variables": false

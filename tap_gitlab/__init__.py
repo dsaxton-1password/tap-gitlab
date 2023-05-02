@@ -89,6 +89,12 @@ RESOURCES = {
         'key_properties': ['project_id', 'merge_request_iid', 'commit_id'],
         'replication_method': 'FULL_TABLE',
     },
+    'merge_request_diffs': {
+        'url': '/projects/{id}/merge_requests/{secondary_id}/diffs',
+        'schema': load_schema('merge_request_diffs'),
+        'key_properties': ['project_id', 'merge_request_iid', 'commit_id'],
+        'replication_method': 'FULL_TABLE',
+    },
     'project_milestones': {
         'url': '/projects/{id}/milestones',
         'schema': load_schema('milestones'),
@@ -470,6 +476,7 @@ def sync_merge_requests(project):
             # And then sync all the commits for this MR
             # (if it has changed, new commits may be there to fetch)
             sync_merge_request_commits(project, transformed_row)
+            sync_merge_request_diffs(project, transformed_row)
 
     singer.write_state(STATE)
 
@@ -491,6 +498,25 @@ def sync_merge_request_commits(project, merge_request):
             transformed_row = transformer.transform(row, RESOURCES["merge_request_commits"]["schema"], mdata)
 
             singer.write_record("merge_request_commits", transformed_row, time_extracted=utils.now())
+
+def sync_merge_request_diffs(project, merge_request):
+    entity = "merge_request_diffs"
+    stream = CATALOG.get_stream(entity)
+    if stream is None or not stream.is_selected():
+        return
+    mdata = metadata.to_map(stream.metadata)
+
+    url = get_url(entity="merge_request_diffs", id=project['id'], secondary_id=merge_request['iid'])
+
+    with Transformer(pre_hook=format_timestamp) as transformer:
+        for row in gen_request(url):
+            row['project_id'] = project['id']
+            row['merge_request_iid'] = merge_request['iid']
+            row['commit_id'] = row['id']
+            row['commit_short_id'] = row['short_id']
+            transformed_row = transformer.transform(row, RESOURCES["merge_request_diffs"]["schema"], mdata)
+
+            singer.write_record("merge_request_diffs", transformed_row, time_extracted=utils.now())
 
 def sync_releases(project):
     entity = "releases"

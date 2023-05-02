@@ -222,10 +222,6 @@
             "type": ["null", "boolean"],
             "description" : "Indicates if the merge request is a draft."
         },
-        "diff_refs": {
-            "type": ["null", "string"],
-            "description": "References of the base SHA, the head SHA, and the start SHA for this merge request. Corresponds to the latest diff version of the merge request. Empty when the merge request is created, and populates asynchronously."
-        },
         "detailed_merge_status": {
             "type": ["null", "string"],
             "description" : "Detailed merge status of the merge request."

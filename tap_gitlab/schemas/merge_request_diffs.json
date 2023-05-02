@@ -1,0 +1,45 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": ["null", "integer"],
+            "description": "The ID or URL-encoded path of the project owned by the authenticated user."
+        },
+        "merge_request_iid": {
+            "type": ["null", "integer"],
+            "description": "The internal ID of the merge request."
+        },
+        "old_path": {
+            "type": ["null", "string"],
+            "description": "Old path of the file."
+        },
+        "new_path": {
+            "type": ["null", "string"],
+            "description": "New path of the file."
+        },
+        "a_mode": {
+            "type": ["null", "string"],
+            "description": "Old file mode of the file."
+        },
+        "b_mode": {
+            "type": ["null", "string"],
+            "description": "New file mode of the file."
+        },
+        "diff": {
+            "type": ["null", "string"],
+            "description": "Diff representation of the changes made on the file."
+        },        
+        "new_file": {
+            "type": ["null", "boolean"],
+            "description": "Indicates if the file has just been added."
+        },
+        "renamed_file": {
+            "type": ["null", "boolean"],
+            "description": "Indicates if the file has been renamed."
+        },
+        "deleted_file": {
+            "type": ["null", "boolean"],
+            "description": "Indicates if the file has been removed."
+        }
+    }
+}
