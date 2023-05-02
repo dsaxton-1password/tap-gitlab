@@ -2,16 +2,20 @@
     "type": "object",
     "properties": {
         "id": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "ID of the merge request."
         },
         "iid": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "Internal ID of the merge request."
         },
         "project_id": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "ID of the merge request project."
         },
         "milestone_id": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "Milestone of the merge request."
         },
         "author_id": {
             "type": ["null", "integer"]
@@ -21,12 +25,14 @@
         },
         "assignees": {
             "type": "array",
+            "description": "Assignees of the merge request.",
             "items": {
                 "type": ["null", "integer"]
             }
         },        
         "reviewers": {
             "type": "array",
+            "description": "Reviewers of the merge request.",
             "items": {
                 "type": ["null", "integer"]
             }
@@ -82,64 +88,83 @@
             ]
         },
         "title": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Title of the merge request."
         },
         "description": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Description of the merge request. Contains Markdown rendered as HTML for caching."
         },
         "state": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "State of the merge request. Can be opened, closed, merged or locked."
         },
         "target_project_id": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "ID of the merge request target project."
         },
         "target_branch": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Target branch of the merge request."
         },
         "source_project_id": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "ID of the merge request source project."
         },
         "source_branch": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Source branch of the merge request."
         },
         "upvotes": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "Number of upvotes for the merge request."
         },
         "downvotes": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "Number of downvotes for the merge request."
         },
         "labels": {
             "type": "array",
+            "description": "Labels of the merge request.",
             "items": {
                 "type": ["null", "string"]
             }
         },
         "work_in_progress": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Deprecated: Use draft instead. Indicates if the merge request is a draft."
         },
         "merge_when_pipeline_succeeds": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Indicates if the merge has been set to be merged when its pipeline succeeds."
         },
         "merge_status": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Status of the merge request. Can be unchecked, checking, can_be_merged, cannot_be_merged, or cannot_be_merged_recheck. Affects the has_conflicts property. For important notes on response data, read Single merge request response notes. Deprecated in GitLab 15.6. Use detailed_merge_status instead."
         },
         "has_conflicts": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Indicates if merge request has conflicts and cannot be merged. Dependent on the merge_status property. Returns false unless merge_status is cannot_be_merged."
         },
         "sha": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Diff head SHA of the merge request."
         },
         "squash_commit_sha": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "SHA of the squash commit. Empty until merged."
         },
         "user_notes_count": {
-            "type": ["null", "integer"]
+            "type": ["null", "integer"],
+            "description": "User notes count of the merge request."
         },
         "should_remove_source_branch": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Indicates if the source branch of the merge request will be deleted after merge."
         },
         "force_remove_source_branch": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Indicates if the project settings will lead to source branch deletion after merge."
         },
         "allow_collaboration": {
             "type": ["null", "boolean"]
@@ -147,11 +172,17 @@
         "allow_maintainer_to_push": {
             "type": ["null", "boolean"]
         },
+        "approvals_before_merge": {
+            "type": ["null", "integer"],
+            "description": "Number of approvals required before this merge request can merge."            
+        },
         "web_url": {
-            "type": ["null", "string"]
+            "type": ["null", "string"],
+            "description": "Web URL of the merge request."
         },
         "squash": {
-            "type": ["null", "boolean"]
+            "type": ["null", "boolean"],
+            "description": "Indicates if squash on merge is enabled."
         },
         "time_estimate": {
             "type": ["null", "integer"]
@@ -164,6 +195,48 @@
         },
         "human_total_time_spent": {
             "type": ["null", "string"]
-        }   
+        },   
+        "latest_build_finished_at": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "latest_build_started_at": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "draft": {
+            "type": ["null", "boolean"],
+            "description" : "Indicates if the merge request is a draft."
+        },
+        "diff_refs": {
+            "type": ["null", "string"],
+            "description": "References of the base SHA, the head SHA, and the start SHA for this merge request. Corresponds to the latest diff version of the merge request. Empty when the merge request is created, and populates asynchronously."
+        },
+        "detailed_merge_status": {
+            "type": ["null", "string"],
+            "description" : "Detailed merge status of the merge request."
+        },
+        "changes_count": {
+            "type": ["null", "string"],
+            "description": "Number of changes made on the merge request. Empty when the merge request is created, and populates asynchronously."
+        },
+        "blocking_discussions_resolved": {
+            "type": ["null", "boolean"],
+            "description": "Indicates if all discussions are resolved only if all are required before merge request can be merged."
+        }
     }
 }
