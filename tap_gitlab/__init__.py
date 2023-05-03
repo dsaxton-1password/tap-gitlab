@@ -509,11 +509,9 @@ def sync_merge_request_diffs(project, merge_request):
     url = get_url(entity="merge_request_diffs", id=project['id'], secondary_id=merge_request['iid'])
 
     with Transformer(pre_hook=format_timestamp) as transformer:
-        for row in gen_request(url):
+        for row in request(url).json():
             row['project_id'] = project['id']
             row['merge_request_iid'] = merge_request['iid']
-            row['commit_id'] = row['id']
-            row['commit_short_id'] = row['short_id']
             transformed_row = transformer.transform(row, RESOURCES["merge_request_diffs"]["schema"], mdata)
 
             singer.write_record("merge_request_diffs", transformed_row, time_extracted=utils.now())
