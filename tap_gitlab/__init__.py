@@ -262,15 +262,9 @@ def get_start(entity):
                       factor=2)
 def request(url, params=None):
     params = params or {}
-    headers = {}
+    headers = {"Private-Token": CONFIG["private_token"]}
     if 'user_agent' in CONFIG:
         headers['User-Agent'] = CONFIG['user_agent']
-
-    for cookie_name in ['AWSELBAuthSessionCookie-0', '_gitlab_session']:
-        if not SESSION.cookies.get(cookie_name):
-            with open(f'.secrets/{cookie_name}') as f:
-                cookie = f.read().strip()
-                SESSION.cookies.set(cookie_name, cookie)
 
     resp = SESSION.request('GET', url, params=params, headers=headers)
     LOGGER.info("GET {}".format(url))
